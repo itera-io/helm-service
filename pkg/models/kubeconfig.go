@@ -12,11 +12,9 @@ import (
 )
 
 func GetKubeconfigPath(headers *http.Header) (string, error) {
-	log.Println("get kube config")
 	if headers == nil || headers.Get("Kubeconfig") == "" {
 		return "", errors.New("please specify kubeconfig on the headers")
 	}
-	log.Println(headers.Get("Kubeconfig"))
 	kubeconfig, err := base64.StdEncoding.DecodeString(headers.Get("Kubeconfig"))
 	if err != nil {
 		return "", errors.New("please specify base64 encoded kubeconfig")
@@ -26,7 +24,6 @@ func GetKubeconfigPath(headers *http.Header) (string, error) {
 }
 
 func StoreKubeConfig(kubeconfig []byte) string {
-	log.Println("store kube config")
 	filepath := uuid.New().String() + ".yaml"
 	err := ioutil.WriteFile(filepath, kubeconfig, 0)
 

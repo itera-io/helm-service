@@ -16,12 +16,11 @@ func GetHelmReleaseInfo(context *gin.Context) {
 		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-
 	releaseInfo, err := models.GetHelmReleaseInfo(releaseName, namespace, kubeConfigPath)
+	models.RemoveTempFile(kubeConfigPath)
 	if err != nil {
 		context.IndentedJSON(http.StatusBadRequest, gin.H{"message": err.Error()})
 		return
 	}
-	models.RemoveTempFile(kubeConfigPath)
 	context.IndentedJSON(http.StatusOK, releaseInfo)
 }
